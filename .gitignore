@@ -1,0 +1,70 @@
+# Abhängigkeiten #
+/node_modules
+
+# Log-Dateien #
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data #
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Verzeichnis für Produktionsumgebung #
+/dist
+
+# dotenv Umgebungsvariablen-Datei #
+.env
+.env.local
+.env.*.local
+
+# Debug-Verzeichnis #
+/.vscode/*
+
+# IDE-Verzeichnisse #
+/.idea
+/*.sublime-project
+/*.sublime-workspace
+
+# Caches #
+.npm
+.cache
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.yarn/*.lock
+
+# OS generated files #
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+
+# Optional npm cache directory #
+.npm
+
+# Optional eslint cache #
+.eslintcache
+
+# Output of 'npm pack' #
+*.tgz
+
+# Yarn Integrity file #
+.yarn-integrity
+
+# Compiled binary addons (https://nodejs.org/api/addons.html) #
+build/Release
+
+# Dump files #
+*.stackdump
+
+# Optional REPL history #
+.node_repl_history
+
+# Output folder from TypeScript #
+/build
+/tsconfig.tsbuildinfo
