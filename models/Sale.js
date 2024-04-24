@@ -8,8 +8,9 @@ const saleSchema = mongoose.Schema(
       ref: "User", // Referenz auf das User Model
     },
     product: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: "Item",
     },
     date: {
       type: Date,

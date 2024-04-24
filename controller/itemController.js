@@ -40,3 +40,20 @@ export const getItems = async (req, res) => {
     res.status(500).json({ message: "Serverfehler beim Abrufen der Artikel" });
   }
 };
+
+export const addPfandToOrder = async (req, res) => {
+  const orderId = req.body.orderId; // Die ID der Bestellung aus dem Request bekommen
+  try {
+    // Hier Logik einfügen, um die Bestellung zu finden und zu aktualisieren
+    const order = await Order.findById(orderId);
+    order.total += 3; // 3€ zum Gesamtbetrag hinzufügen
+    await order.save();
+
+    res.status(200).json(order);
+  } catch (error) {
+    console.error("Fehler beim Hinzufügen von Pfand zur Bestellung: ", error);
+    res
+      .status(500)
+      .json({ message: "Serverfehler beim Aktualisieren der Bestellung" });
+  }
+};

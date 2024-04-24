@@ -17,12 +17,21 @@ const userSchema = mongoose.Schema(
     },
     role: {
       type: String,
-      default: "employee", // Standardmäßig 'employee', kann aber zu 'admin' geändert werden
-      enum: ["employee", "admin"], // Beschränkt die Rolle auf diese zwei Werte
+      default: "employee",
+      enum: ["employee", "admin"],
+    },
+    confirmationCode: {
+      type: String,
+      unique: true,
+    },
+    status: {
+      type: String,
+      default: "Pending",
+      enum: ["Pending", "Active"],
     },
   },
   {
-    timestamps: true, // Erstellt createdAt und updatedAt Felder automatisch
+    timestamps: true,
   }
 );
 
