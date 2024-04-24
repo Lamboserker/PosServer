@@ -26,15 +26,15 @@ export const registerUser = async (req, res) => {
 
     // Erstelle einen neuen Benutzer mit der Rolle
     const result = await User.create({
-      password: hashedPassword,
       name,
+      password: hashedPassword,
       role: userRole,
     });
 
     // Erstelle einen JWT-Token
     const token = jwt.sign(
-      { id: result._id, role: result.role },
-      "test", // Denk daran, einen sicheren Schlüssel zu verwenden und ihn nicht hart zu kodieren
+      { name: result.name, id: result._id, role: result.role },
+      process.env.JWT_SECRET, // Denk daran, einen sicheren Schlüssel zu verwenden
       { expiresIn: "1h" }
     );
 
@@ -46,19 +46,11 @@ export const registerUser = async (req, res) => {
 };
 
 export const loginUser = async (req, res) => {
-  const { password } = req.body;
-  let { name } = req.body;
+  const { name, password } = req.body;
 
   try {
-    let user;
-    // Bestimmen, ob die Eingabe eine E-Mail-Adresse oder ein Benutzername ist und entsprechend suchen
-
-    if (!name) {
-      return res.status(400).json({ message: " Benutzername fehlt." });
-    } else {
-      user = await User.findOne({ name });
-    }
-    // Wenn kein Benutzer gefunden wurde
+    // Suche nach dem Benutzer anhand des Benutzernamens
+    const user = await User.findOne({ name });
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden." });
     }
@@ -71,12 +63,12 @@ export const loginUser = async (req, res) => {
 
     // Erstellen eines JWT-Tokens
     const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET, // Verwende eine Umgebungsvariable für den JWT-Secret
+      { name: user.name, id: user._id, role: user.role },
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
-    res.status(200).json({ result: user, token, status: user.role }); // Senden Sie den Benutzerstatus als Teil der Antwort
+    res.status(200).json({ result: user, token, role: user.role });
   } catch (error) {
     res.status(500).json({ message: "Etwas ist schiefgelaufen." });
     console.error(error);
