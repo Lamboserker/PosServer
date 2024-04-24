@@ -8,6 +8,11 @@ export const recordSale = async (req, res) => {
   }
 
   const { userId, productId, count, amount } = req.body;
+  if (!req.user) {
+    return res.status(401).json({ message: "Nicht autorisiert" });
+  }
+
+  const { userId, productId, count, amount } = req.body;
 
   try {
     const newSale = await Sale.create({
@@ -15,6 +20,7 @@ export const recordSale = async (req, res) => {
       product: productId,
       count,
       amount,
+      date: new Date(),
       date: new Date(),
     });
 
