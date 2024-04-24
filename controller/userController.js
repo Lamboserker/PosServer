@@ -7,34 +7,29 @@ export const registerUser = async (req, res) => {
   const { name, password, role } = req.body;
 
   try {
-    // Prüfe, ob der Benutzer bereits existiert
     const existingUser = await User.findOne({ name });
     if (existingUser) {
-      return res.status(400).json({ message: "Benutzer existiert bereits." });
+      return res
+        .status(400)
+        .json({ message: "Benutzername existiert bereits." });
     }
 
-    // Hash das Passwort
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Definiere die Benutzerrolle
-    // Sicherheitshinweis: In der Praxis sollte das direkte Setzen einer Admin-Rolle über eine öffentliche API vermieden werden.
-    // Dieses Beispiel setzt voraus, dass angemessene Sicherheitsmaßnahmen getroffen wurden.
     let userRole = "employee";
     if (role && ["admin", "employee"].includes(role)) {
       userRole = role;
     }
 
-    // Erstelle einen neuen Benutzer mit der Rolle
     const result = await User.create({
       name,
       password: hashedPassword,
       role: userRole,
     });
 
-    // Erstelle einen JWT-Token
     const token = jwt.sign(
       { name: result.name, id: result._id, role: result.role },
-      process.env.JWT_SECRET, // Denk daran, einen sicheren Schlüssel zu verwenden
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
