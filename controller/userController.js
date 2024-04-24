@@ -4,11 +4,11 @@ import jwt from "jsonwebtoken";
 
 // Benutzer registrieren
 export const registerUser = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  const { name, password, role } = req.body;
 
   try {
     // Prüfe, ob der Benutzer bereits existiert
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ name });
     if (existingUser) {
       return res.status(400).json({ message: "Benutzer existiert bereits." });
     }
@@ -26,7 +26,6 @@ export const registerUser = async (req, res) => {
 
     // Erstelle einen neuen Benutzer mit der Rolle
     const result = await User.create({
-      email,
       password: hashedPassword,
       name,
       role: userRole,
@@ -34,7 +33,7 @@ export const registerUser = async (req, res) => {
 
     // Erstelle einen JWT-Token
     const token = jwt.sign(
-      { email: result.email, id: result._id, role: result.role },
+      { id: result._id, role: result.role },
       "test", // Denk daran, einen sicheren Schlüssel zu verwenden und ihn nicht hart zu kodieren
       { expiresIn: "1h" }
     );
@@ -48,21 +47,17 @@ export const registerUser = async (req, res) => {
 
 export const loginUser = async (req, res) => {
   const { password } = req.body;
-  let { email, name } = req.body;
+  let { name } = req.body;
 
   try {
     let user;
     // Bestimmen, ob die Eingabe eine E-Mail-Adresse oder ein Benutzername ist und entsprechend suchen
-    if (email) {
-      user = await User.findOne({ email });
-    } else if (name) {
-      user = await User.findOne({ name });
-    } else {
-      return res
-        .status(400)
-        .json({ message: "E-Mail oder Benutzername fehlt." });
-    }
 
+    if (!name) {
+      return res.status(400).json({ message: " Benutzername fehlt." });
+    } else {
+      user = await User.findOne({ name });
+    }
     // Wenn kein Benutzer gefunden wurde
     if (!user) {
       return res.status(404).json({ message: "Benutzer nicht gefunden." });
@@ -76,7 +71,7 @@ export const loginUser = async (req, res) => {
 
     // Erstellen eines JWT-Tokens
     const token = jwt.sign(
-      { email: user.email, id: user._id },
+      { id: user._id },
       process.env.JWT_SECRET, // Verwende eine Umgebungsvariable für den JWT-Secret
       { expiresIn: "1h" }
     );
