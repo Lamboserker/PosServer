@@ -8,11 +8,6 @@ export const recordSale = async (req, res) => {
   }
 
   const { userId, productId, count, amount } = req.body;
-  if (!req.user) {
-    return res.status(401).json({ message: "Nicht autorisiert" });
-  }
-
-  const { userId, productId, count, amount } = req.body;
 
   try {
     const newSale = await Sale.create({
@@ -20,7 +15,6 @@ export const recordSale = async (req, res) => {
       product: productId,
       count,
       amount,
-      date: new Date(),
       date: new Date(),
     });
 
@@ -61,10 +55,8 @@ export const getAllSalesByUser = async (req, res) => {
     res.status(200).json(sales);
   } catch (error) {
     console.error("Fehler beim Abrufen der Verkäufe des Benutzers:", error);
-    res
-      .status(500)
-      .json({
-        message: "Serverfehler beim Abrufen der Verkäufe des Benutzers",
-      });
+    res.status(500).json({
+      message: "Serverfehler beim Abrufen der Verkäufe des Benutzers",
+    });
   }
 };
