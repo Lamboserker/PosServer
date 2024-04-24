@@ -10,15 +10,6 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    role: {
-      type: String,
-      default: "employee",
-      enum: ["employee", "admin"],
-    },
-    confirmationCode: {
-      type: String,
-      unique: true,
-    },
     status: {
       type: String,
       default: "Pending",
