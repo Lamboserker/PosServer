@@ -1,31 +1,43 @@
-// saleController.js
 import Sale from "../models/Sale.js";
+import { check, validationResult } from "express-validator";
 
 // Verkauf erfassen
-export const recordSale = async (req, res) => {
-  if (!req.user) {
-    return res.status(401).json({ message: "Nicht autorisiert" });
-  }
+export const recordSale = [
+  // Validierung
+  check("userId", "Benutzer-ID ist erforderlich").not().isEmpty(),
+  check("productId", "Produkt-ID ist erforderlich").not().isEmpty(),
+  check("count", "Anzahl muss eine Zahl sein").isNumeric(),
+  check("amount", "Betrag muss eine Zahl sein").isNumeric(),
+  async (req, res) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "Nicht autorisiert" });
+    }
 
-  const { userId, productId, count, amount } = req.body;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
 
-  try {
-    const newSale = await Sale.create({
-      user: userId,
-      product: productId,
-      count,
-      amount,
-      date: new Date(),
-    });
+    const { userId, productId, count, amount } = req.body;
 
-    res.status(201).json(newSale);
-  } catch (error) {
-    res.status(500).json({
-      message: "Etwas ist schiefgelaufen beim Erfassen des Verkaufs.",
-      error: error.message,
-    });
-  }
-};
+    try {
+      const newSale = await Sale.create({
+        user: userId,
+        product: productId,
+        count,
+        amount,
+        date: new Date(),
+      });
+
+      res.status(201).json(newSale);
+    } catch (error) {
+      res.status(500).json({
+        message: "Etwas ist schiefgelaufen beim Erfassen des Verkaufs.",
+        error: error.message,
+      });
+    }
+  },
+];
 
 // Verkauf abrufen
 export const getSaleById = async (req, res) => {
@@ -41,7 +53,7 @@ export const getSaleById = async (req, res) => {
   }
 };
 
-//Alle Verkäufe eines users
+//Alle Verkäufe eines Users
 export const getAllSalesByUser = async (req, res) => {
   const userId = req.params.userId;
 

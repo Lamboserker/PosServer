@@ -1,9 +1,8 @@
-// adminController.js
 import Sale from "../models/Sale.js";
 
 // Verkaufsdaten abrufen mit Filter für das Produkt
 export const getSales = async (req, res) => {
-  const productQuery = req.query.product; // Produkt-ID aus der Query-Parameter
+  const productQuery = req.query.product; // Produkt-ID aus den Query-Parametern
 
   try {
     let query = {};
