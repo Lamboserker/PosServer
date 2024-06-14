@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
-
+// In authMiddleware.js
+import jwt from "jsonwebtoken"; // Importieren Sie die jwt-Bibliothek
+import User from "../models/User.js"; // Importieren Sie das Modell "User" aus der Datei "User.js"
 export const protect = async (req, res, next) => {
   let token;
 
@@ -9,33 +9,27 @@ export const protect = async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      // Extrahiere den Token aus dem Authorization-Header
       token = req.headers.authorization.split(" ")[1];
-
-      // Verifiziere den Token
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      // Hole den Benutzer von der Datenbank ohne das Passwort
-      req.user = await User.findById(decoded.id).select("-password");
-
+      req.user = await User.findOne({ name: decoded.name }).select("-password"); // Suche nach dem Benutzer mit dem decodierten Namen
+      console.log("Found user:", req.user); // Logge den gefundenen Benutzer
       next();
     } catch (error) {
-      console.error(error);
-      res
+      console.error("Token-Verifikation fehlgeschlagen:", error);
+      return res
         .status(401)
         .json({ message: "Nicht autorisiert, Token fehlgeschlagen" });
     }
-  }
-
-  if (!token) {
-    res.status(401).json({ message: "Nicht autorisiert, kein Token" });
+  } else {
+    return res.status(401).json({ message: "Nicht autorisiert, kein Token" });
   }
 };
 
 export const admin = (req, res, next) => {
   if (req.user && req.user.role === "admin") {
+    console.log("User role:", req.user.role); // Logge die Rolle des Benutzers
     next();
   } else {
-    res.status(401).json({ message: "Nicht autorisiert als Admin" });
+    return res.status(401).json({ message: "Nicht autorisiert als Admin" });
   }
 };
