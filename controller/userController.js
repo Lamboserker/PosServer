@@ -88,3 +88,31 @@ export const loginUser = [
     }
   },
 ];
+
+export const getUsernamesByIds = async (req, res) => {
+  try {
+    const userIds = req.body.userIds; // Die Benutzer-IDs aus dem Request-Body auslesen
+    const users = await User.find({ _id: { $in: userIds } }).select("name"); // Namen der Benutzer abrufen
+
+    if (!users.length) {
+      return res.status(404).json({ message: "Keine Benutzer gefunden" });
+    }
+
+    res.json(users.map((user) => ({ id: user._id, name: user.name })));
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Benutzernamen:", error);
+    res
+      .status(500)
+      .json({ message: "Serverfehler beim Abrufen der Benutzernamen" });
+  }
+};
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Benutzer:", error);
+    res.status(500).json({ message: "Serverfehler beim Abrufen der Benutzer" });
+  }
+};

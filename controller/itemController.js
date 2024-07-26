@@ -64,3 +64,16 @@ export const addPfandToOrder = async (req, res) => {
       .json({ message: "Serverfehler beim Aktualisieren der Bestellung" });
   }
 };
+
+// Funktion zum Abrufen aller Artikel mit Bildern
+export const getItemsWithImages = async (req, res) => {
+  try {
+    const items = await Item.find();
+    res.status(200).json(items);
+  } catch (error) {
+    console.error("Fehler beim Abrufen der Artikel mit Bildern: ", error);
+    res
+      .status(500)
+      .json({ message: "Serverfehler beim Abrufen der Artikel mit Bildern" });
+  }
+};

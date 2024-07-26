@@ -5,7 +5,7 @@ const saleSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: "User", // Referenz auf das User Model
+      ref: "User",
     },
     product: {
       type: mongoose.Schema.Types.ObjectId,
@@ -14,10 +14,9 @@ const saleSchema = mongoose.Schema(
     },
     date: {
       type: Date,
-      default: Date.now, // Standardmäßig das aktuelle Datum und die aktuelle Uhrzeit
+      default: Date.now,
     },
     count: {
-      // Hinzufügen des Betragsfeldes
       type: Number,
       required: true,
     },
