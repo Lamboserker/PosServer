@@ -33,7 +33,7 @@ Before running the application, ensure you have the following installed:
    ```bash
    git clone https://github.com/Lamboserker/PosServer.git
    cd PosServer
-´´´
+```
 
 2. Install the dependencies:
 ```bash
