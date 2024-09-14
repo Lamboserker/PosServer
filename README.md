@@ -80,6 +80,4 @@ The server will start on port 5000 by default. You can configure the port by add
 - ```POST /users/login:``` Log in a user. Requires name and password.
 - ```POST /users/get-names:``` Retrieve usernames by a list of user IDs.
 
-## License
 
-This project is licensed under the MIT License.
