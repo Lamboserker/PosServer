@@ -54,7 +54,9 @@ npm start
 The server will start on port 5000 by default. You can configure the port by adding a PORT variable to your .env file.
 
 ## API Endpoints
-#Sales
+
+# Sales
+
 ```GET /sales:``` Retrieve sales, optionally filtered by product.
 ```POST /sales:``` Record a sale. Requires userId, productId, count, and amount in the body.
 ```POST /sales/search:``` Search sales by startDate, endDate, and selected items.
@@ -64,14 +66,20 @@ The server will start on port 5000 by default. You can configure the port by add
 ```DELETE /sales/:``` Delete a sale by its ID.
 ```POST /sales/filter-by-users:``` Filter sales by a list of user IDs.
 ```POST /sales/percentage-by-users:``` Get sales percentage by users, filtered by date.
-#Items
+
+# Items
+
 ```POST /items:``` Add a new item. Requires name, type, price, and image (optional).
 ```GET /items:``` Retrieve all items.
 ```GET /items/images:``` Retrieve all items with their associated images.
 ```POST /items/add-pfand:``` Add Pfand (3€) to an order. Requires orderId in the body.
-#Users
+
+# Users
+
 ```POST /users/register:``` Register a new user. Requires name, password, and role (optional).
 ```POST /users/login:``` Log in a user. Requires name and password.
 ```POST /users/get-names:``` Retrieve usernames by a list of user IDs.
-##License
+
+## License
+
 This project is licensed under the MIT License.
