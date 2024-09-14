@@ -30,24 +30,24 @@ Before running the application, ensure you have the following installed:
 
 1. Clone the repository:
 
-   ```bash
+   ```
    git clone https://github.com/Lamboserker/PosServer.git
    cd PosServer
 ´´´
 
 2. Install the dependencies:
-```bash
+```
 npm install
 ```
 
 3. Set up environment variables by creating a .env file in the root of the project and adding the following:
-```bash
+```
 MONGODB_URI=<your_mongodb_connection_string>
 JWT_SECRET=<your_jwt_secret>
 ```
 
 4. Start the server:
-```bash
+```
 npm start
 ```
 
